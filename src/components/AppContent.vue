@@ -4,10 +4,11 @@
 
         <div>
             <main class="main">
-                <textarea-autosize v-model="pangram" class="textarea" placeholder="Type here"></textarea-autosize>
+                <!-- <textarea-autosize v-model="pangram" class="textarea" placeholder="Type here"></textarea-autosize> -->
+                <EditableText v-model="pangram" class="textarea" :highlight="highlight" />
                 <div class="counter">{{ pangramLength }}</div>
             </main>
-            <AlphabetChecker :pangram="pangram" @typed="typed" @backspace="backspace" />
+            <AlphabetChecker :pangram="pangram" @typed="typed" @backspace="backspace" @highlight="highlight = $event" />
         </div>
 
         <div class="flex buttons-area">
@@ -34,16 +35,19 @@
 <script>
 import AlphabetChecker from '@/components/AlphabetChecker';
 import { TextareaAutosize } from 'vue-textarea-autosize'
+import EditableText from '@/components/EditableText'
 
 export default {
     components: {
         AlphabetChecker,
-        TextareaAutosize
+        TextareaAutosize,
+        EditableText
     },
     data: function() {
         return {
             pangram: '',
-            pangrams: []
+            pangrams: [],
+            highlight: ''
         }
     },
     computed: {
@@ -71,6 +75,15 @@ export default {
         },
         saveToLocalStorage: function() {
             localStorage.setItem('pangram', JSON.stringify(this.pangrams))
+        },
+        computeTyping: function(value) {
+            const alphabet = ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', 'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'z', 'x', 'c', 'v', 'b', 'n', 'm']
+            console.log(value)
+            if (alphabet.includes(value.key.toLowerCase())) {
+                this.pangram = this.pangram + value.key
+            } else if (value.key == 'ce') {
+                this.pangram = this.pangram + ' '
+            }
         }
     },
     created() {
@@ -114,7 +127,7 @@ export default {
 
 .counter {
     position: absolute;
-    bottom: 3px;
+    bottom: 0;
     right: 0;
     background: $color;
     padding: 6px 0;
@@ -172,6 +185,11 @@ export default {
 
         &.remove {
             color: $color;
+            cursor: pointer;
+            
+            &:hover {
+                text-decoration: underline; 
+            }
         }
     }
 } 

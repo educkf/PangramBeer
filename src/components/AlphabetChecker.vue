@@ -5,6 +5,8 @@
                 v-for="letter in alphabet" 
                 :key="letter" 
                 @click="$emit('typed', letter)"
+                @mouseover="$emit('highlight', letter)" 
+                @mouseleave="$emit('highlight', null)"
                 class="letter" 
                 :class="{filled: pangramArray.includes(letter)}">
                 {{ letter }}
