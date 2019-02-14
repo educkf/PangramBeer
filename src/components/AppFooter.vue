@@ -1,7 +1,7 @@
 <template>
     
     <footer class="footer">
-        <p class="text">Pangram Beer - bullshit project by <a href="https://github.com/educkf" target="_blank">@educkf</a></p>
+        <p class="text">Pangram Beer - Dumb sh*t project by <a href="https://github.com/educkf/PangramBeer" target="_blank">@educkf</a></p>
     </footer>
 
 </template>
