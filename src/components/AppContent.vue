@@ -5,10 +5,10 @@
         <div>
             <main class="main">
                 <!-- <textarea-autosize v-model="pangram" class="textarea" placeholder="Type here"></textarea-autosize> -->
-                <EditableText v-model="pangram" class="textarea" :highlight="highlight" />
+                <EditableText v-model="pangram" class="textarea" :highlight="highlighted" />
                 <div class="counter">{{ pangramLength }}</div>
             </main>
-            <AlphabetChecker :pangram="pangram" @typed="typed" @backspace="backspace" @highlight="highlight = $event" />
+            <AlphabetChecker :pangram="pangram" @typed="typed" @backspace="backspace" @highlight="highlighted = $event" :highlight="highlighted" />
         </div>
 
         <div class="flex buttons-area">
@@ -47,7 +47,7 @@ export default {
         return {
             pangram: '',
             pangrams: [],
-            highlight: ''
+            highlighted: ''
         }
     },
     computed: {
@@ -115,9 +115,7 @@ export default {
 .textarea {
     width: 100%;
     background: #eee;
-    padding: 24px;
     font-size: 36px;
-    color: $color;
     font-weight: 700;
     outline: none;
     border: none;
@@ -137,6 +135,7 @@ export default {
     border-bottom-right-radius: 6px;
     width: 40px;
     text-align: center;
+    z-index: 3;
 }
 
 .buttons-area {

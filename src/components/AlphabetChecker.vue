@@ -4,11 +4,9 @@
             <span
                 v-for="letter in alphabet" 
                 :key="letter" 
-                @click="$emit('typed', letter)"
-                @mouseover="$emit('highlight', letter)" 
-                @mouseleave="$emit('highlight', null)"
+                @click="clicked(letter)"
                 class="letter" 
-                :class="{filled: pangramArray.includes(letter)}">
+                :class="{filled: pangramArray.includes(letter), selected: highlight == letter}">
                 {{ letter }}
             </span>
             <span v-if="keyboard" class="letter space" @click="$emit('typed', ' ')">space</span>
@@ -30,6 +28,9 @@ export default {
         pangram: {
             type: String,
             required: true
+        },
+        highlight: {
+            type: String
         }
     },
     data: function() {
@@ -47,6 +48,19 @@ export default {
         },
         pangramArray() {
             return this.pangram.toLowerCase().split('')
+        }
+    },
+    methods: {
+        clicked: function(value) {
+            if (this.keyboard) {
+                this.$emit('typed', value)
+            } else {
+                if (this.highlight == value) {
+                    this.$emit('highlight', null)
+                } else {
+                    this.$emit('highlight', value)
+                }
+            }
         }
     }
 }
@@ -79,6 +93,11 @@ export default {
             background: rgba(66, 185, 131, 0.2);
             color: $color;
             font-weight: 700;
+        }
+
+        &.selected {
+            border-color: #333;
+            color: #333;
         }
 
         &.space {
