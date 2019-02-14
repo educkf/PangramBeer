@@ -1,29 +1,9 @@
-# pangram
+# Pangram Beer
 
-## Project setup
-```
-npm install
-```
+Dumb shit project (a.k.a. [Sara Vieira](https://twitter.com/NikkitaFTW)) for my currently favorite activity at spare time: Thinking of [Pangrams](https://en.wikipedia.org/wiki/Pangram) names for my Homemade Beers.
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+Built in Vue.js PWA, built in 1 hour and 30min (ish). It was pretty cool :)
+Still has some bugs to fix, and features to implement, but I need to get back to work.
 
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Run your tests
-```
-npm run test
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+# Demo
+See it in action: [https://pangrambeer.surge.sh/](https://pangrambeer.surge.sh/)
