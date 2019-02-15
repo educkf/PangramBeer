@@ -8,7 +8,12 @@
                 <EditableText v-model="pangram" class="textarea" :highlight="highlighted" />
                 <div class="counter">{{ pangramLength }}</div>
             </main>
+            
             <AlphabetChecker :pangram="pangram" @typed="typed" @backspace="backspace" @highlight="highlighted = $event" :highlight="highlighted" />
+
+            <div class="suggestions">
+                <span v-for="suggestion in suggestions" :key="suggestion" @click="addWord(suggestion)" class="suggestion">{{ suggestion }}</span>
+            </div>
         </div>
 
         <div class="flex buttons-area">
@@ -47,12 +52,24 @@ export default {
         return {
             pangram: '',
             pangrams: [],
-            highlighted: ''
+            highlighted: '',
+            dictionary: ['Acetaldehyde', 'Acid Rest', 'Acrospire', 'Adjunct', 'Aeration', 'Alcohol', 'ABV', 'Alcoholic', 'Ale', 'Airlock', 'Saccharomyces cerevisiae', 'Extract', 'Alpha Acid', 'Alpha Amylase', 'Beta Amylase', 'Aroma', 'Astringency', 'Attenuation', 'Barley', 'Barrel', 'Beta Acids', 'Bitterness', 'IBU', 'BJCP', 'Body', 'Boiling', 'Bottle', 'Bottom Fermentation', 'Brettanomyces', 'Brewpub', 'Brew Kettle', 'Sulphur', 'Carbon Dioxide', 'Carbonation', 'Cellaring', 'Chill', 'Haze', 'Hazy', 'Cold Break', 'Color', 'Craft', 'Decoction Mash', 'Plato', 'Dextrin', 'Diacetyl', 'Diastatic', 'Dry Hopping', 'Essential Hop Oils', 'Esters', 'Ethanol', 'Fermentable Sugars', 'Fermentation', 'Fermentation Lock', 'Filtration', 'Filter', 'Final gravity', 'Flocculation', 'Forced Carbonation', 'Fresh Hopping', 'Germination', 'Grainy', 'Grist', 'Growler', 'Gruit', 'Head Retention', 'Homebrewing', 'Hops', 'Hopping', 'Humulene', 'Hydrometer', 'Immersion Chiller', 'Infusion', 'Inoculate', 'Irish Moss', 'Gelatine', 'Keg', 'Kraeusen', 'Lactobacillus', 'Lager', 'Lagering', 'Lightstruck', 'Liquorous', 'Lovibond', 'Malt', 'Malt Extract', 'Maltose', 'Mash', 'Mashing', 'Mash Out', 'Microbrewery', 'Mouthfeel', 'Musty', 'Myrcene', 'Natural Carbonation', 'Ninkasi', 'Nitrogen', 'Noble Hops', 'Oasthouse', 'Original Gravity', 'OG', 'Oxidation', 'pH', 'Phenols', 'Pitching', 'Primary Fermentation', 'Priming', 'Prohibition', 'Racking', 'Real Ale', 'Residual', 'Alkalinity', 'Residual Sugar', 'Resin', 'Saccharification', 'Saccharomyces', 'Secondary Fermentation', 'Session Beer', 'Solvent', 'Sorghum', 'Sour', 'Sparging', 'Specific Gravity', 'Sulfur Aroma', 'Tannins', 'Temperature Rests', 'Top Fermentation', 'Trigeminal Nerves', 'Trub', 'Turbidity', 'Volatile', 'Water', 'Wet Hopping', 'Whirlpool', 'Wort', 'Yeast', 'Zymurgy', 'Admiral', 'Agnus', 'Ahtanum', 'AlphAroma', 'Amarillo', 'Amethyst', 'Apollo', 'Aramis', 'Atlas', 'Aurora', 'Beata', 'Belma', 'Bitter Gold', 'Boadicea', 'Bobek', 'Bouclier', 'Bramling Cross', 'Bravo', 'Brewers Gold', 'British Kent Goldings', 'Bullion', 'Calicross', 'California Cluster', 'Calypso', 'Cascade', 'Cashmere', 'Cekin', 'Celeia', 'Centennial', 'Challenger', 'Chelan', 'Chinook', 'Cicero', 'Citra', 'Cluster', 'Cobb’s Golding', 'Columbia', 'Columbus', 'Comet', 'Dana', 'Delta', 'Dr. Rudi', 'Early Green', 'El Dorado', 'Ella', 'Endeavour', 'Equinox', 'Eroica', 'Falconers Flight', 'First Gold', 'Flyer', 'Fuggle', 'Galaxy', 'Galena', 'Glacier', 'Golding', 'Green Bullet', 'Hallertau', 'HBC 342 Experimental', 'Helga', 'Herald', 'Herkules', 'Hersbrucker', 'Horizon', 'Huell Melon', 'Ivanhoe', 'Jester', 'Junga', 'Kazbek', 'Kohatu', 'Liberty', 'Lubelski', 'Magnum', 'Mandarina Bavaria', 'Mathon', 'Marynka', 'Meridian', 'Merkur', 'Millennium', 'Mittelfruh', 'Mosaic', 'Motueka', 'Mt. Hood', 'Mt. Rainier', 'Nelson Sauvin', 'Newport', 'Northdown', 'Northern Brewer', 'Nugget', 'Opal', 'Orbit', 'Orion', 'Outeniqua', 'Pacific Gem', 'Pacific Jade', 'Pacific Sunrise', 'Pacifica', 'Palisade', 'Perle', 'Phoenix', 'Pilgrim', 'Pilot', 'Pioneer', 'Polaris', 'Premiant', 'Pride of Ringwood', 'Progress', 'Rakau', 'Riwaka', 'Saaz', 'Santiam', 'Saphir', 'Satus', 'Select', 'Serebrianka', 'Simcoe', 'Sladek', 'Smaragd', 'Sonnet', 'Sorachi Ace', 'Southern Brewer', 'Southern Cross', 'Southern Promise', 'Southern Star', 'Sovereign', 'Spault', 'Spaulter Select', 'Sterling', 'Strickelbract', 'Strisselspault', 'Styrian Gold', 'Styrian Golding', 'Summer', 'Summit', 'Super Galena', 'Super Pride', 'Sussex', 'Sybilla', 'Sylva', 'Tahoma', 'Tardif de Burgogne', 'Target', 'Taurus', 'Teamaker', 'Tettnanger', 'Tillicum', 'Topaz', 'Tradition', 'Triple Pearl', 'Triskel', 'Ultra', 'Universal', 'Vanguard', 'Victoria', 'Viking', 'Vital', 'Vojvodina', 'Wai-iti', 'Waimea', 'Wakatu', 'Warrior', 'Whitbread Goldings', 'Willamette', 'Yakima Cluster', 'Yakima Gold', 'Zenith', 'Zythos', 'Pale Malt', 'Wheat Malt', 'Rye Malt', 'Vienna Malt', 'Munich Malt', 'Carapils', 'Caramel', 'Crystal', 'Victory Malt', 'Special Roast', 'Chocolate Malt', 'Roasted Barley', 'Black Barley', 'Weizen', 'Melanoidin', 'Amber Malt', 'Aromatic', 'Belgian Special', 'Biscuit Malt', 'CaraVienne', 'CaraMunich', 'Rauchmalt']
         }
     },
     computed: {
         pangramLength() {
             return this.pangram.replace(/ /g,'').length
+        },
+        suggestions() {
+            const toArray = this.pangram.split(' ');
+            const lastWord = toArray[toArray.length - 1];
+            console.log('lastWord: ', lastWord)
+            if (lastWord && lastWord != '') {
+                const suggestions = this.dictionary.filter(item => item.toLowerCase().search(lastWord.toLowerCase()) > -1)
+                return suggestions
+            } else {
+                return []
+            }
         }
     },
     methods: {
@@ -84,6 +101,11 @@ export default {
             } else if (value.key == 'ce') {
                 this.pangram = this.pangram + ' '
             }
+        },
+        addWord: function(word) {
+            const toArray = this.pangram.split(' ');
+            toArray[toArray.length - 1] = word + ' ';
+            this.pangram = toArray.join(' ')
         }
     },
     created() {
@@ -136,6 +158,20 @@ export default {
     width: 40px;
     text-align: center;
     z-index: 3;
+}
+
+.suggestions {
+    width: 900px;
+    margin: 36px auto;
+}
+
+.suggestion {
+    border: 1px solid $color;
+    padding: 6px;
+    margin-right: 3px;
+    margin-bottom: 3px;
+    display: inline-block;
+    border-radius: 50px;
 }
 
 .buttons-area {
