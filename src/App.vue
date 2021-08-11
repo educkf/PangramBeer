@@ -1,8 +1,10 @@
 <template>
   <div id="app">
+  
     <AppHeader />
     <AppContent />
     <AppFooter />
+
   </div>
 </template>
 
